@@ -1,0 +1,10 @@
+name: california-housing-regression
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+      - pandas
+      - scikit-learn
+      - mlflow

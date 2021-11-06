@@ -1,0 +1,13 @@
+name: bike-rental-regression
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      train_year: { type: int }
+      train_month: { type: int }
+      test_year: { type: int }
+      test_month: { type: int }
+      dataset_path: path
+    command: "python train.py {train_year} {train_month} {test_year} {test_month} {dataset_path}"
