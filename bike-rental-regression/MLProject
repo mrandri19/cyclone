@@ -1,6 +1,8 @@
 name: bike-rental-regression
 
-conda_env: conda.yaml
+docker_env:
+  volumes: ["/home/andrea/demo-ATSS/data:/data"]
+  image: mlflow-docker-example
 
 entry_points:
   main:
@@ -9,5 +11,5 @@ entry_points:
       train_month: { type: int }
       test_year: { type: int }
       test_month: { type: int }
-      dataset_path: path
+      dataset_path: str # this is not a path because it only exists in Docker's filesystem
     command: "python train.py {train_year} {train_month} {test_year} {test_month} {dataset_path}"
