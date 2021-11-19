@@ -16,7 +16,7 @@ RUN ln -s /opt/conda/ /miniconda
 
 RUN python -c 'from mlflow.models.container import _install_pyfunc_deps; _install_pyfunc_deps("/opt/ml/model")'
 
-# Taken from TODO(Andrea): if this works explain
+# Taken from https://pythonspeed.com/articles/activate-conda-dockerfile/
 SHELL ["conda", "run", "-n", "custom_env", "/bin/bash", "-c"]
 
 # https://github.com/mlflow/mlflow/blob/9faf3b04c9f6b3766a64d7433dd3e85bcdf27fff/mlflow/pyfunc/scoring_server/__init__.py#L382
