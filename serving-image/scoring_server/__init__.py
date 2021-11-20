@@ -21,6 +21,7 @@ import pandas as pd
 import sys
 import traceback
 from flask_sqlalchemy import SQLAlchemy
+import sqlalchemy
 
 # NB: We need to be careful what we import form mlflow here. Scoring server is used from within
 # model's conda environment. The version of mlflow doing the serving (outside) and the version of
@@ -218,12 +219,31 @@ def init(model: PyFuncModel):
     app = flask.Flask(__name__)
     input_schema = model.metadata.get_input_schema()
 
-    app.config["DB_USERNAME"] = os.environ['DB_USERNAME']
-    app.config["DB_PASSWORD"] = os.environ['DB_PASSWORD']
-    app.config["DB_HOST"] = os.environ['DB_HOST']
-    app.config["DB_NAME"] = os.environ['DB_NAME']
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{app.config["DB_USERNAME"]}:{app.config["DB_PASSWORD"]}@{app.config["DB_HOST"]}:5432/{app.config["DB_NAME"]}'  # noqa: 501
-    # TODO(Andrea): wtf is this
+    db_uri = None
+    if os.environ.get("DB_HOST"):
+        db_uri = sqlalchemy.engine.url.URL.create(
+            drivername="postgresql+psycopg2",
+            username=os.environ["DB_USER"],
+            password=os.environ["DB_PASS"],
+            host=os.environ["DB_HOST"],
+            port=os.environ["DB_PORT"],
+            database=os.environ["DB_NAME"]
+        )
+    else:
+        db_uri = sqlalchemy.engine.url.URL.create(
+            drivername="postgresql+psycopg2",
+            username=os.environ["DB_USER"],
+            password=os.environ["DB_PASS"],
+            database=os.environ["DB_NAME"],
+            query={
+                "host": "{}/{}/".format(
+                    "/cloudsql",
+                    os.environ["INSTANCE_CONNECTION_NAME"])
+            }
+        )
+    _logger.error(db_uri)
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db = SQLAlchemy(app)
 
@@ -236,7 +256,7 @@ def init(model: PyFuncModel):
 
         created_at = db.Column(db.Date())
 
-    @app.route("/ping", methods=["GET"])
+    @ app.route("/ping", methods=["GET"])
     def ping():  # pylint: disable=unused-variable
         """
         Determine if the container is working and healthy.
@@ -246,8 +266,8 @@ def init(model: PyFuncModel):
         status = 200 if health else 404
         return flask.Response(response="\n", status=status, mimetype="application/json")
 
-    @app.route("/invocations", methods=["POST"])
-    @catch_mlflow_exception
+    @ app.route("/invocations", methods=["POST"])
+    @ catch_mlflow_exception
     def transformation():  # pylint: disable=unused-variable
         """
         Do an inference on a single batch of data. In this sample server,
