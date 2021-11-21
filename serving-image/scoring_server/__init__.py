@@ -124,7 +124,17 @@ def parse_json_input(json_input, orient="split", schema: Schema = None):
     """
 
     try:
-        return _dataframe_from_json(json_input, pandas_orient=orient, schema=schema)
+        json_input_tmp = json.loads(json_input)
+
+        labels = json_input_tmp['labels']
+        del json_input_tmp['labels']
+
+        dataf = _dataframe_from_json(json.dumps(
+            json_input_tmp), pandas_orient=orient, schema=schema)
+
+        dataf['label'] = labels
+
+        return dataf
     except Exception:
         _handle_serving_error(
             error_message=(
@@ -254,7 +264,8 @@ def init(model: PyFuncModel):
         model_id = db.Column(db.Text())
         label = db.Column(db.JSON())
 
-        created_at = db.Column(db.Date())
+        created_at = db.Column(db.DateTime(
+            timezone=True), default=db.func.now())
 
     @ app.route("/ping", methods=["GET"])
     def ping():  # pylint: disable=unused-variable
@@ -358,15 +369,17 @@ def init(model: PyFuncModel):
                 error_code=BAD_REQUEST,
             )
 
-        input_data = data.values.tolist()
+        input_data = data.drop(columns='label').values.tolist()
+        labels = data['label'].values.tolist()
+
         predictions = raw_predictions
         assert len(predictions) == len(input_data)
-        for (input, prediction) in zip(input_data, predictions):
+        for (input, prediction, label) in zip(input_data, predictions, labels):
             db.session.add(Prediction(
                 input=input,
                 prediction=prediction,
                 model_id=model.metadata.run_id,
-                label=None
+                label=label
             ))
 
         db.session.commit()
