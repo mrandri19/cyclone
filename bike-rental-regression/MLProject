@@ -2,6 +2,12 @@ name: bike-rental-regression
 
 docker_env:
   image: mlflow-docker-example
+  environment:
+    - DB_USER
+    - DB_PASS
+    - DB_HOST
+    - DB_NAME
+    - DB_PORT
 
 entry_points:
   main:
