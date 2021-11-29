@@ -1,15 +1,11 @@
 name: bike-rental-regression
 
 docker_env:
-  volumes: ["/home/andrea/demo-ATSS/data:/data"]
   image: mlflow-docker-example
 
 entry_points:
   main:
     parameters:
-      train_year: { type: int }
-      train_month: { type: int }
-      test_year: { type: int }
-      test_month: { type: int }
-      dataset_path: str # this is not a path because it only exists in Docker's filesystem
-    command: "python train.py {train_year} {train_month} {test_year} {test_month} {dataset_path}"
+      num_train: { type: int }
+      num_test: { type: int }
+    command: "python train.py {num_train} {num_test}"
