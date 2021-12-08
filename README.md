@@ -1,5 +1,4 @@
-
-<img src="docs/logo.svg" width=225 align="right">
+<img src="docs/logo.svg" width=125 height=125 align="right">
 
 # Cyclone
 
