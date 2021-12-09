@@ -12,6 +12,10 @@ Second, if the performance is sufficient, retraining is pointless and wastes exp
 Cyclone is a software system that performs serving, monitoring, and automatic retraining of ML models.
 This is a proof-of-concept implementation of it, created as the final project for Aalto University's CS-E4660: Advanced Topics in Software Systems. 
 
+---
+
+[[_TOC_]]
+
 ## Requirements
 
 - Serve one or more machine learning models as user-accessible REST APIs
@@ -109,6 +113,11 @@ Finally, GCR's Admin API is used to deploy a new revision of the `cyclone-gcr-se
 └── serving-image # Custom Docker image and custom serving app. Replaces mlflow's default serving image
 ```
 
-## Extensions and future work 
+## Extensions and future work
+
+
 
 ## Lessons learned
+
+## References
+
