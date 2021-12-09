@@ -93,6 +93,22 @@ Finally, GCR's Admin API is used to deploy a new revision of the `cyclone-gcr-se
 
 ## Project structure
 
+```bash
+.
+├── 01-bike-sharing-demand-drift.ipynb # notebook to show a model's performance drop over time and the positive impact of retraining 
+├── 02-test-model-serving.ipynb # notebook to test mlflow's local model serving
+├── 03-test-docker-model-serving.ipynb # notebook to test mlflow's dockerized model serving
+├── 04-test-docker-training-serving.ipynb # notebook to test mlflow's dockerized model training and serving
+├── 05-gcloud.ipynb # notebook to test deploying a model serving image on Google Cloud
+├── 06-demo-steps.ipynb # notebooks to run the demo
+├── README.md
+├── bike-rental-regression # mlflow project to train a model and produce a scikit-learn model artifact
+├── brain # Flask app that listens for grafana webhook calls and retrains and redeploys new models on GCR
+├── data
+├── docs
+└── serving-image # Custom Docker image and custom serving app. Replaces mlflow's default serving image
+```
+
 ## Extensions and future work 
 
 ## Lessons learned
