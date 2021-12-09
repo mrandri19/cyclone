@@ -12,7 +12,27 @@ Second, if the performance is sufficient, retraining is pointless and wastes exp
 Cyclone is a software system that performs serving, monitoring, and automatic retraining of ML models.
 This is a proof-of-concept implementation of it, created as the final project for Aalto University's CS-E4660: Advanced Topics in Software Systems. 
 
+## Requirements
+
+- Serve one or more machine learning models as user-accessible REST APIs
+    - Scale to zero or multiple machines, depending on the usage
+    - Deploy any kind of Docker container
+    - Zero downtime model updates
+
+- Store all data sent to/from the models
+    - Store, in a flexible format, all input features sent to the model
+    - Efficiently serve all of input data and associated labels for retraining
+    - Join every input requests with its prediction and its true labels
+    - Monitor input data distribution shift in real time
+    - Monitor predictive performance in real time, using predictions and true labels
+
+- Visualize metrics in real-time using a dashboard 
+
+- Automatically retrain and redeploy models when the performance dips below a threshold
+
 ## Architecture
+
+
 
 ### Scaling serving using Google Cloud Run (GCR)
 
