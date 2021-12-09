@@ -56,9 +56,38 @@ The trained model will be packaged in a Docker image, which is sent to the servi
 
 ### Implementation
 
-<img src="./docs/cyclone-implementation-architecture.png" width="500">
+<img src="./docs/cyclone-implementation-architecture.png" width="900">
 
-## Scaling serving using Google Cloud Run (GCR)
+The **serving component** uses Google Cloud Run (GCR) to serve Docker images.
+GCR is an hosted platform based on Kubernetes and Knative.
+It supports out of the box all of the features we need (traffic splitting, scaling to zero, scaling horizontally).
+Additionally, it also handles load balancing and HTTPS certificate renewal.
+We deploy a service on GCR called `gyclone-gcr-service`.
+This service serves the ML model images to users, exposing them via an HTTPS endpoint.
+
+The **storage component** uses Google Cloud SQL to store and serve data.
+It is an hosted database product, based on PostgreSQL.
+The database uses a table called `prediction` to store our data.
+The table's schema is:
+```sql
+CREATE TABLE prediction (
+    id INTEGER PRIMARY KEY,
+    input JSONB NOT NULL,
+    prediction JSONB NOT NULL,
+    model_id TEXT NOT NULL,
+    label JSONB,
+    created_at TIMESTAMPTZ NOT NULL
+)
+```
+
+The **visualization (and monitoring) component** uses Grafana to build interactive dashboards.
+Additionally, it uses Grafana alerts and webhook notification channels to notify the training components to retraing a model.
+The dashboard looks like this:
+
+<img src="./docs/grafana.png" width="900">
+
+
+## Project structure
 
 ## Extensions and future work 
 
