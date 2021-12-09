@@ -56,6 +56,8 @@ The trained model will be packaged in a Docker image, which is sent to the servi
 
 ### Implementation
 
+<img src="./docs/cyclone-implementation-architecture.png" width="500">
+
 ## Scaling serving using Google Cloud Run (GCR)
 
 ## Extensions and future work 
