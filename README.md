@@ -32,6 +32,9 @@ This is a proof-of-concept implementation of it, created as the final project fo
 
 ## Architecture
 
+To satisfy the requirements four main components are required:
+
+![High level architecture diagram](./docs/cyclone-high-level-architecture.png)
 
 
 ### Scaling serving using Google Cloud Run (GCR)
