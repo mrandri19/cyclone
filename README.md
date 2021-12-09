@@ -26,17 +26,37 @@ This is a proof-of-concept implementation of it, created as the final project fo
     - Monitor input data distribution shift in real time
     - Monitor predictive performance in real time, using predictions and true labels
 
-- Visualize metrics in real-time using a dashboard 
+- Visualize metrics in real-time in a dashboard 
 
 - Automatically retrain and redeploy models when the performance dips below a threshold
 
 ## Architecture
 
+### High level components view
+
 To satisfy the requirements four main components are required:
 
 <img src="./docs/cyclone-high-level-architecture.png" width="500">
 
-### Scaling serving using Google Cloud Run (GCR)
+The serving component handles serving of the ML models.
+It receives a trained model from the training component, as a Docker image.
+It performs autoscaling and traffic splitting in order to ensure zero downtimes.
+Each deployed model will write its inputs and outputs to the storage component
+
+The storage component handles storing of all input/output pairs from the served models.
+Additionally it merges the inputs and predictions with their respective ground truths, once they become available.
+Finally, it provides data for the visualizaion and training components.
+
+The visualization (and monitoring) component will periodically compute the performance metrics of interest.
+If these metrics drop below a certain threshold, it sends an alert to the training component.
+
+The training component, once it receives an alert from the visualization and monitoring component, will retrain a model.
+To do so, it loads a recent subset of labelled data from the storage layer, and use it to train a new model.
+The trained model will be packaged in a Docker image, which is sent to the serving component.
+
+### Implementation
+
+## Scaling serving using Google Cloud Run (GCR)
 
 ## Extensions and future work 
 
