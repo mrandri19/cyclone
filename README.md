@@ -62,7 +62,7 @@ The **serving component** uses Google Cloud Run (GCR) to serve Docker images.
 GCR is an hosted platform based on Kubernetes and Knative.
 It supports out of the box all of the features we need (traffic splitting, scaling to zero, scaling horizontally).
 Additionally, it also handles load balancing and HTTPS certificate renewal.
-We deploy a service on GCR called `gyclone-gcr-service`.
+We deploy a service on GCR called `cyclone-gcr-service`.
 This service serves the ML model images to users, exposing them via an HTTPS endpoint.
 
 The **storage component** uses Google Cloud SQL to store and serve data.
@@ -80,12 +80,16 @@ CREATE TABLE prediction (
 )
 ```
 
-The **visualization (and monitoring) component** uses Grafana to build interactive dashboards.
+The **visualization (and monitoring) component** uses Grafana hosted on a Google Compute Engine VM Instance to build interactive dashboards.
 Additionally, it uses Grafana alerts and webhook notification channels to notify the training components to retraing a model.
 The dashboard looks like this:
 
 <img src="./docs/grafana.png" width="900">
 
+The **training component** is a custom Python server, hosted on a Google Compute Engine VM Instance.
+Under the hood, it uses mlflow to train, evaluate, and package ML models into Docker containers.
+When a model has been trained, it will be pushed to the **image registry component**, which uses Google Cloud's Artifact Registry.
+Finally, GCR's Admin API is used to deploy a new revision of the `cyclone-gcr-service`, pulling the latest Docker image from the registry.
 
 ## Project structure
 
