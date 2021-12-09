@@ -113,11 +113,39 @@ Finally, GCR's Admin API is used to deploy a new revision of the `cyclone-gcr-se
 └── serving-image # Custom Docker image and custom serving app. Replaces mlflow's default serving image
 ```
 
-## Extensions and future work
+## Improvements and future work
 
+TODO(Andrea): write
 
+- Reactive, message-based architecture in order to decouple components. Especially important to decouple serving and storage
+
+- Separate inference storage from data storage. Perhaps even introduce a feature store. How to keep loop latency low though?
+
+- Use DAG scheduler such as Airflow instead of custom application (brain) for retraining and redeploying
+
+- Reduce loop latency by speeding up docker container building or by restricing model families and only updating parameters
+
+- Model, data, inference lineage and observability. See mltrace and DVC.
+
+- Distributed training, distributed image building (Cloud build)
+
+- Declarative deployment (Terraform? Docker swarm? Kubernetes?, Infrastracture as Code)
 
 ## Lessons learned
 
+TODO(Andrea): write
+
+- Serverless serving architecture using Google Cloud Run simplifies serving workflow a lot
+
+- Working locally gives fast feedback, but then you have to deploy and face environment differences which are hard to debug
+
 ## References
+
+TODO(Andrea): write
+
+- Josh Tobin
+
+- Chip Huyen
+
+- Shreya Shankar
 
