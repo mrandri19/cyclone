@@ -133,15 +133,24 @@ In order to achieve the best performance, splitting these two stores in two sepa
 
 Another interesting option would be to use a [feature store](https://www.featurestore.org/).
 
-- Use DAG scheduler such as Airflow instead of custom application (brain) for retraining and redeploying
+### Use a workflow management platform for training and deployment
 
-- Reduce loop latency by speeding up docker container building or by restricing model families and only updating parameters
+Currently the training service (i.e.`cyclone-brain-vm`) runs a custom python web server.
+This server listens for grafana webhook alerts and re-runs the training and deployment steps.
+A more solid solution would involve using a product such as Apache Airflow, in order to run command DAGs.
+This will also help us scale to multiple models, as well as multiple workers.
 
-- Model, data, inference lineage and observability. See mltrace and DVC.
+### Other
+
+Many other improvements could be made, here we name a few without delving into details
+
+- Reduce loop latency by speeding upDdocker container building or by restricing model families and only updating parameters
+
+- Model, data, inference lineage and observability. Using tools such as [mltrace](https://github.com/loglabs/mltrace) and [DVC](https://dvc.org/).
 
 - Distributed training, distributed image building (Cloud build)
 
-- Declarative deployment (Terraform? Docker swarm? Kubernetes?, Infrastracture as Code)
+- Declarative deployment (Terraform/Docker swarm/Kubernetes, Infrastracture as Code)
 
 ## Lessons learned
 
