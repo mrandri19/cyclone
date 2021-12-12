@@ -154,11 +154,15 @@ Many other improvements could be made, here we name a few without delving into d
 
 ## Lessons learned
 
-TODO(Andrea): write
+Serverless architectures, such as the one provided by Google Cloud Run (GCR), can greatly simplify ML model serving.
+This is because of three main features: horizontal scaling to zero/infinity, zero-downtime deployments, and container-based deployments.
+It is not a coincidence that both GCR and KServe, Kubeflow Serving's new name, a popular MLOps platform, share the same underlying tech stack.
 
-- Serverless serving architecture using Google Cloud Run simplifies serving workflow a lot
 
-- Working locally gives fast feedback, but then you have to deploy and face environment differences which are hard to debug
+Designing and building a complex, multiservice cloud architecture is no easy feat.
+One of the biggest pain points was the slow feedback loop between making a local change and have it deployed in the cloud.
+To address this issue I tried replicating the cloud environment locally, in order to reduce the feedback latency.
+While this solved the latency issue, it also allowed for slight differences between the development and production environment, which were quite painful to debug.
 
 ## References
 
