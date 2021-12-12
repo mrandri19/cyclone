@@ -115,9 +115,15 @@ Finally, GCR's Admin API is used to deploy a new revision of the `cyclone-gcr-se
 
 ## Improvements and future work
 
-TODO(Andrea): write
+### Reactive architecture
 
-- Reactive, message-based architecture in order to decouple components. Especially important to decouple serving and storage
+Currently, most of the system's component are very tightly coupled with each other.
+The serving component, in order to serve predictions, needs the storage component to be available.
+The visualization and monitoring component will fail to send alerts if the training component is not responsive.
+This is clearly bad from a reliability and elasticity perspective.
+
+To address this issue we believe that adopting principles from [reactive architectures](https://www.reactivemanifesto.org/) is beneficial.
+More specifically, using message queues such as RabbitMQ or Apache Kafka could help decouple the systems.
 
 - Separate inference storage from data storage. Perhaps even introduce a feature store. How to keep loop latency low though?
 
