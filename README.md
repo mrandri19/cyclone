@@ -166,11 +166,11 @@ While this solved the latency issue, it also allowed for slight differences betw
 
 ## References
 
-TODO(Andrea): write
+- [Aalto University's Advanced Topics in Software Systems (CS-E4660)](https://version.aalto.fi/gitlab/sys4bigml/cs-e4660)
 
-- Josh Tobin
+- [Josh Tobin's "The Missing Link in ML Infrastructure"](https://www.youtube.com/watch?v=qERW9R3espg)
 
-- Chip Huyen
+- [Chip Huyen's blog](https://huyenchip.com/)
 
-- Shreya Shankar
+- [Shreya Shankar's blog](https://www.shreya-shankar.com/)
 
