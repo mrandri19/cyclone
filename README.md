@@ -125,7 +125,13 @@ This is clearly bad from a reliability and elasticity perspective.
 To address this issue we believe that adopting principles from [reactive architectures](https://www.reactivemanifesto.org/) is beneficial.
 More specifically, using message queues such as RabbitMQ or Apache Kafka could help decouple the systems.
 
-- Separate inference storage from data storage. Perhaps even introduce a feature store. How to keep loop latency low though?
+### Split inference and training databases
+
+The inference database (also called evaluation store) and the training data database, in this architecture, live in the same PostgreSQL instance.
+These two databases have very different access patterns, respectively, write-heavy and read-heavy.
+In order to achieve the best performance, splitting these two stores in two separate and potentially different databases, could be beneficial.
+
+Another interesting option would be to use a [feature store](https://www.featurestore.org/).
 
 - Use DAG scheduler such as Airflow instead of custom application (brain) for retraining and redeploying
 
