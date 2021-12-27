@@ -113,6 +113,31 @@ Finally, GCR's Admin API is used to deploy a new revision of the `cyclone-gcr-se
 └── serving-image # Custom Docker image and custom serving app. Replaces mlflow's default serving image
 ```
 
+## How to run the demo
+
+These steps allow a user to recreate the project and run the demo.
+It assumes that the project will be deployed on Google Cloud Platform (GCP).
+
+1. Create an Artifact Registry Docker repository called `cyclone-docker-repo`.
+[GCP Docs](https://cloud.google.com/artifact-registry/docs/docker/quickstart)
+1. Create a Google Cloud Run service called `cyclone-gcr-service` and deploy an
+image from the Docker repo. [GCP Docs](https://cloud.google.com/run/docs/deploying)
+1. Create a PostgreSQL database instance called `cyclone-evaluation-store` on
+Cloud SQL. [GCP Docs](https://cloud.google.com/sql/docs/postgres/quickstart)
+1. Create the `prediction` table using the aforementioned schema.
+1. Connect Cloud Run to Cloud SQL.
+[GCP Docs](https://cloud.google.com/sql/docs/postgres/connect-run)
+1. Create a VM instance called `cyclone-grafana-monitoring-vm`, using
+Cloud SQL Auth Proxy connect it to Cloud SQL, start Grafana.
+1. Create a grafana dashboard to monitor the `prediction` table.
+1. Create a VM instance called `cyclone-brain-vm`, using Cloud SQL Auth Proxy
+connect it to Cloud SQL, clone and run `brain`.
+1. Locally train a model (using `mlflow run`) on January data and push an image to
+Artifact Registry.
+1. Using the image, deploy a new revision of the GCR service
+1. Locally open `06-demo-steps.ipynb` and run the cells sequentially,
+monitoring Grafana in the meantime.
+
 ## Improvements and future work
 
 ### Reactive architecture
